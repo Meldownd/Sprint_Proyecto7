@@ -6,7 +6,7 @@ import streamlit as st
 # ----------------------------------------------------------------------#
 # CARGA DEL DATASET
 # ----------------------------------------------------------------------#
-df = pd.read_csv("../csv/vehicles_us.csv")
+df = pd.read_csv("csv/vehicles_us.csv")
 
 
 def cleaning(data):
@@ -61,10 +61,21 @@ df_clean = cleaning(df)
 st.title("📊 Análisis de Datos de Vehículos")
 st.write("Dataset procesado y limpio listo para análisis visual.")
 
+# ----------------------------------------------------------------------#
+# BOTONES TOGGLE (para ocultar informacion al volver a activar)
+# ----------------------------------------------------------------------#
+if "show_scatter" not in st.session_state:
+    st.session_state.show_scatter = False
+if "show_condition" not in st.session_state:
+    st.session_state.show_condition = False
+if "show_type" not in st.session_state:
+    st.session_state.show_type = False
 
 # ----------------------------------------------------------------------#
 # 🔹 GRÁFICA 1: DISPERSIÓN (Kilometraje vs Precio)
 # ----------------------------------------------------------------------#
+
+
 def plot_scatter(data):
     """
     Muestra la relación entre kilometraje, precio y condición del vehículo.
@@ -97,14 +108,11 @@ def plot_scatter(data):
     )
     return fig
 
-
-if st.button("Mostrar gráfica de dispersión"):
-    st.plotly_chart(plot_scatter(df_clean), use_container_width=True)
-
-
 # ----------------------------------------------------------------------#
 # 🔹 GRÁFICA 2: PRECIO PROMEDIO SEGÚN CONDICIÓN
 # ----------------------------------------------------------------------#
+
+
 def plot_condition_mean(data):
     """
     Muestra el precio promedio agrupado por condición del vehículo.
@@ -124,14 +132,11 @@ def plot_condition_mean(data):
     fig.update_traces(marker_color="skyblue")
     return fig
 
-
-if st.button("Mostrar gráfica de precio promedio por condición"):
-    st.plotly_chart(plot_condition_mean(df_clean), use_container_width=True)
-
-
 # ----------------------------------------------------------------------#
 # 🔹 GRÁFICA 3: PRECIO PROMEDIO POR TIPO DE VEHÍCULO
 # ----------------------------------------------------------------------#
+
+
 def plot_type_mean(data):
     """
     Muestra el precio promedio agrupado por tipo de vehículo.
@@ -153,5 +158,33 @@ def plot_type_mean(data):
     return fig
 
 
-if st.button("Mostrar gráfica de precio promedio por tipo"):
+# ----------------------------------------------------------------------#
+# 🔹 BOTONES INTERACTIVOS(osea que se activan y desactiva)
+# ----------------------------------------------------------------------#
+if st.button("Mostrar / Ocultar gráfica de dispersión"):
+    st.session_state.show_scatter = not st.session_state.show_scatter
+
+if st.session_state.show_scatter:
+    st.plotly_chart(plot_scatter(df_clean), use_container_width=True)
+
+
+if st.button("Mostrar / Ocultar precio promedio por condición"):
+    st.session_state.show_condition = not st.session_state.show_condition
+
+if st.session_state.show_condition:
+    st.plotly_chart(plot_condition_mean(df_clean), use_container_width=True)
+
+
+if st.button("Mostrar / Ocultar precio promedio por tipo"):
+    st.session_state.show_type = not st.session_state.show_type
+
+if st.session_state.show_type:
+    st.plotly_chart(plot_type_mean(df_clean), use_container_width=True)
+# ----------------------------------------------------------------------#
+# 🔹 CHECBOX
+# ----------------------------------------------------------------------#
+st.write("Activar esta caja activa otra cosa")
+graficas = st.checkbox("Mostrar gráficas adicionales")
+if graficas:
+    st.plotly_chart(plot_condition_mean(df_clean), use_container_width=True)
     st.plotly_chart(plot_type_mean(df_clean), use_container_width=True)
