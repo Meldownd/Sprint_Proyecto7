@@ -161,21 +161,21 @@ def plot_type_mean(data):
 # ----------------------------------------------------------------------#
 # 🔹 BOTONES INTERACTIVOS(osea que se activan y desactiva)
 # ----------------------------------------------------------------------#
-if st.button("Mostrar / Ocultar gráfica de dispersión"):
+if st.button("Mostrar gráfica de dispersión"):
     st.session_state.show_scatter = not st.session_state.show_scatter
 
 if st.session_state.show_scatter:
     st.plotly_chart(plot_scatter(df_clean), use_container_width=True)
 
 
-if st.button("Mostrar / Ocultar precio promedio por condición"):
+if st.button("Mostrar promedio por condición"):
     st.session_state.show_condition = not st.session_state.show_condition
 
 if st.session_state.show_condition:
     st.plotly_chart(plot_condition_mean(df_clean), use_container_width=True)
 
 
-if st.button("Mostrar / Ocultar precio promedio por tipo"):
+if st.button("Mostrar precio promedio por tipo"):
     st.session_state.show_type = not st.session_state.show_type
 
 if st.session_state.show_type:
